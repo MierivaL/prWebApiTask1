@@ -66,7 +66,7 @@ namespace task1_p.Controllers
                     {
                         Date = DateTime.Now,
                         Comment = info.Comment,
-                        UserId = db.Fetch<User>().Find(x => x.PhoneNumber == info.PhoneNumber).Id
+                        UserId = (await db.FetchAsync<User>()).Find(x => x.PhoneNumber == info.PhoneNumber).Id
                     };
                     await db.InsertAsync<Appointment>(appointment);
                     db.Dispose();
