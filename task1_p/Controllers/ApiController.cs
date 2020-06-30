@@ -30,7 +30,7 @@ namespace task1_p.Controllers
                 user = (await db.FetchAsync<User>()).Find(x => x.PhoneNumber.Equals(Number));
                 if (null != user)
                 {
-                    user.Appointments = (await db.FetchAsync<Appointment>()).FindAll(x => x.UserId == user.Id);
+                    user.Appointments = (await db.FetchAsync<Appointment>("where UserId = @0", user.Id));
                 }
                 db.Dispose();
             }
@@ -69,7 +69,6 @@ namespace task1_p.Controllers
                         UserId = (await db.FetchAsync<User>()).Find(x => x.PhoneNumber == info.PhoneNumber).Id
                     };
                     await db.InsertAsync<Appointment>(appointment);
-                    db.Dispose();
                 }
             } catch (Exception ex)
             {
