@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
 using NPoco;
-using NPoco.fastJSON;
-using Microsoft.AspNetCore.Http;
 
 namespace task1_p.Controllers
 {
@@ -41,13 +35,13 @@ namespace task1_p.Controllers
 
         // POST api
         [HttpPost]
-        public async Task<ActionResult> Post([FromForm]string json)
+        public async Task<ActionResult> Post([FromForm] string json)
         {
             DBConn dbConn = new DBConn();
 
             JsonAppointment info;
-            try
-            {
+            //try
+            //{
                 info = JsonSerializer.Deserialize<JsonAppointment>(json);
                 using (IDatabase db = dbConn.Connect())
                 {
@@ -70,10 +64,11 @@ namespace task1_p.Controllers
                     };
                     await db.InsertAsync<Appointment>(appointment);
                 }
-            } catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status400BadRequest, Json(new ErrorContainer(ex.Message)));
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return this.StatusCode(StatusCodes.Status400BadRequest, Json(new ErrorContainer(ex.Message)));
+            //}
             dbConn.Dispose(); dbConn = null;
             return Redirect("~/Api?Number=" + info.PhoneNumber);
         }
